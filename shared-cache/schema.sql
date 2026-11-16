@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS etv_cache (
+  slot INTEGER PRIMARY KEY,
+  asin TEXT NOT NULL,
+  parent INTEGER NOT NULL,
+  cents INTEGER NOT NULL,
+  updated_at INTEGER NOT NULL
+);

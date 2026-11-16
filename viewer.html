@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vine Viewer</title>
+  <link rel="stylesheet" href="viewer.css">
+  <script defer src="core.js"></script>
+  <script defer src="shared-cache.js"></script>
+  <script defer src="direct-request.js"></script>
+  <script defer src="viewer.js"></script>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>Vine Viewer</h1>
+        <p>Amazon.com &middot; estimated taxable values (ETV)</p>
+      </div>
+      <div class="actions">
+        <button id="refresh" type="button">Scan now</button>
+        <button id="stop" type="button">Stop</button>
+      </div>
+    </header>
+    <form id="settings">
+      <label>Queue
+        <select id="queue">
+          <option value="encore">Additional items</option>
+          <option value="potluck">Recommended for you</option>
+          <option value="last_chance">Available for all</option>
+        </select>
+      </label>
+      <label>Items per page
+        <input id="page-size" type="number" min="1" max="100" step="1" required>
+      </label>
+      <label>Sort
+        <select id="sort">
+          <option value="recent">Amazon order</option>
+          <option value="high">ETV: high to low</option>
+          <option value="low">ETV: low to high</option>
+        </select>
+      </label>
+      <label class="checkbox"><input id="show-zero" type="checkbox"> Show $0 ETV items first</label>
+      <label class="checkbox"><input id="direct-request" type="checkbox"> Request product from viewer</label>
+      <label class="checkbox"><input id="shared-etv" type="checkbox"> Use and contribute shared ETV estimates</label>
+      <label>Refresh interval
+        <select id="interval">
+          <option value="0">Off</option>
+          <option value="120">2 minutes</option>
+          <option value="300">5 minutes</option>
+          <option value="600">10 minutes</option>
+          <option value="1800">30 minutes</option>
+        </select>
+      </label>
+      <label>Additional Items pages to scan
+        <input id="scan-pages" type="number" min="1" max="100" step="1" required>
+      </label>
+      <label class="keywords">Hide titles containing
+        <textarea id="keywords" rows="2" placeholder="Keywords or phrases, separated by commas or new lines"></textarea>
+      </label>
+    </form>
+    <p class="note">New arrivals are highlighted after a completed scan. More than 5 new items trigger a 30-second refresh wait until 3 quieter scans. ETV is not retail price; variant items show one sampled variant. Keep this tab open.</p>
+    <p class="note">Shared ETV is optional and applies only to Additional Items. It sends item IDs and contributed ETVs to Cloudflare; Cloudflare receives your IP address. Values are unverified and may be incorrect. Expired entries can remain stored until overwritten.</p>
+    <p id="cache-status" role="status" aria-live="polite" hidden></p>
+    <p id="status" role="status" aria-live="polite">Starting&hellip;</p>
+    <p id="error" role="alert" hidden></p>
+    <section id="items" aria-label="Vine items"></section>
+    <nav aria-label="Viewer pages">
+      <button id="previous" type="button">Previous</button>
+      <span id="pagination"></span>
+      <button id="next" type="button">Next</button>
+    </nav>
+    <dialog id="request-dialog" aria-labelledby="request-title">
+      <h2 id="request-title">Request product</h2>
+      <p id="request-product"></p>
+      <label id="request-variants-label" hidden>Choose a variant
+        <select id="request-variants"></select>
+      </label>
+      <p id="request-details" role="status" aria-live="polite"></p>
+      <p id="request-error" role="alert" hidden></p>
+      <p>Confirming sends a Vine request and opens Amazon checkout, which may complete the order. The ETV may have tax consequences. Check your delivery address and orders on Amazon.</p>
+      <div class="actions">
+        <button id="request-cancel" type="button">Cancel</button>
+        <button id="request-confirm" type="button" class="request-button" disabled>Confirm request</button>
+      </div>
+    </dialog>
+  </main>
+</body>
+</html>

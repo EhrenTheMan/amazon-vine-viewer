@@ -1,0 +1,8 @@
+shared-cache/wrangler.jsonc
+shared-cache/.wrangler/
+node_modules/
+.env
+.env.*
+!.env.example
+*.xpi
+*.zip

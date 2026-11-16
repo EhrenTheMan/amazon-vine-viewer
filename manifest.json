@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "name": "Vine Viewer",
+  "version": "0.1.0",
+  "description": "A small, local viewer for your Amazon.com Vine items.",
+  "permissions": ["https://www.amazon.com/*", "https://vine-etv-cache.ehren-lampcov.workers.dev/*", "storage"],
+  "browser_action": {
+    "default_title": "Open Vine Viewer"
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.amazon.com/vine/vine-items*"],
+      "js": ["request-prompt.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "vine-viewer@local.invalid",
+      "strict_min_version": "109.0"
+    }
+  }
+}
