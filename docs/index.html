@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A quieter way to scan Amazon Vine in Firefox. Browse new arrivals, sort by estimated taxable value, and filter out what you don't need.">
+  <title>Vine Viewer — A clearer way to browse Amazon Vine</title>
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="site.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="#top" aria-label="Vine Viewer home">
+        <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <path d="M7 8.5 16 24l9-15.5M12 8.5l4 7 4-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Vine Viewer</span>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="#features">Features</a>
+        <a href="#getting-started">Getting started</a>
+        <a class="nav-github" href="https://github.com/EhrenTheMan/amazon-vine-viewer">GitHub <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero shell" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span aria-hidden="true"></span> A Firefox extension for Vine members</p>
+        <h1 id="hero-title">A clearer view of <span>Amazon Vine.</span></h1>
+        <p class="hero-description">Scan more of Additional Items, bring $0 ETV finds to the top, and filter out the noise. All in one simple viewer.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="https://github.com/EhrenTheMan/amazon-vine-viewer#install">
+            Get started <span aria-hidden="true">↗</span>
+          </a>
+          <a class="text-link" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
+        </div>
+        <p class="availability">For Firefox and Amazon.com <span aria-hidden="true">·</span> Temporary install</p>
+      </div>
+      <div class="hero-aside" aria-hidden="true">
+        <span class="aside-line"></span>
+        <p>Less scrolling.<br>More discovering.</p>
+      </div>
+    </section>
+
+    <section class="product-section shell" aria-labelledby="product-heading">
+      <div class="section-topline">
+        <div>
+          <p class="eyebrow">The viewer</p>
+          <h2 id="product-heading">Your queue, in focus.</h2>
+        </div>
+        <p>One place to scan, sort, and request.</p>
+      </div>
+      <div class="product-frame">
+        <div class="product-bar">
+          <div class="product-bar-title"><span class="product-dot"></span> Vine Viewer</div>
+          <span>Actual interface · sample listings</span>
+        </div>
+        <div class="product-shot">
+          <img src="viewer-preview.png" alt="Vine Viewer interface showing scan settings, sample items and estimated taxable values." width="1496" height="1033">
+          <p class="shot-loading" role="status">Loading viewer preview…</p>
+          <p class="shot-error">The viewer preview couldn’t load. <a href="https://github.com/EhrenTheMan/amazon-vine-viewer">View the project on GitHub.</a></p>
+        </div>
+      </div>
+      <p class="product-caption">The viewer runs in a separate Firefox tab. Sample items shown above are illustrative. <a href="viewer-preview.png">View full-size preview <span aria-hidden="true">↗</span></a></p>
+    </section>
+
+    <section class="features-section" id="features" aria-labelledby="features-heading">
+      <div class="shell">
+        <div class="section-intro">
+          <p class="eyebrow">Made for the hunt</p>
+          <h2 id="features-heading">Keep the good stuff in view.</h2>
+          <p>Simple controls for the parts of Vine browsing that take the most time.</p>
+        </div>
+        <div class="features-grid">
+          <article class="feature">
+            <span class="feature-number">01</span>
+            <h3>Scan beyond page one</h3>
+            <p>Choose how many Additional Items pages to scan, then browse the combined results at your own page size.</p>
+          </article>
+          <article class="feature">
+            <span class="feature-number">02</span>
+            <h3>Put ETV in perspective</h3>
+            <p>Sort by estimated taxable value and keep known $0 ETV items at the top—or hide them if you prefer.</p>
+          </article>
+          <article class="feature">
+            <span class="feature-number">03</span>
+            <h3>Skip what isn't for you</h3>
+            <p>Hide titles containing your own keywords. Your filters stay local and don't change anything on Amazon.</p>
+          </article>
+          <article class="feature">
+            <span class="feature-number">04</span>
+            <h3>Spot new arrivals</h3>
+            <p>Keep the viewer open to highlight items found after the first scan. During larger drops, the refresh wait adjusts automatically.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="details-section shell" id="how-it-works">
+      <div class="details-copy">
+        <p class="eyebrow">A few things to know</p>
+        <h2>Helpful context, not another feed to manage.</h2>
+        <p>The viewer checks your signed-in Amazon session on a schedule you choose. It polls for changes, so it can miss short-lived listings.</p>
+        <a class="text-link" href="https://github.com/EhrenTheMan/amazon-vine-viewer#how-it-works">Read how it works <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="details-list">
+        <div>
+          <h3>ETV isn't retail price</h3>
+          <p>ETV can have tax consequences and may vary by option. Parent listings show one sampled variant.</p>
+        </div>
+        <div>
+          <h3>You're in control of requests</h3>
+          <p>Open Amazon's request prompt from the viewer, or opt in to an experimental request flow that hands off to Amazon checkout.</p>
+        </div>
+        <div>
+          <h3>Shared estimates are optional</h3>
+          <p>The Cloudflare cache is off by default. Shared estimates are unverified and can be incorrect.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="start-section" id="getting-started" aria-labelledby="start-heading">
+      <div class="shell start-inner">
+        <div>
+          <p class="eyebrow">Getting started</p>
+          <h2 id="start-heading">Ready for a better view?</h2>
+          <p>Vine Viewer isn't on the Firefox Add-ons store yet. You can try it as a temporary add-on in Firefox.</p>
+          <a class="button button-light" href="https://github.com/EhrenTheMan/amazon-vine-viewer#install">View installation steps <span aria-hidden="true">↗</span></a>
+        </div>
+        <ol class="steps">
+          <li><span>01</span><p>Sign in to Amazon Vine in Firefox.</p></li>
+          <li><span>02</span><p>Load the extension from Firefox's debugging page.</p></li>
+          <li><span>03</span><p>Open Vine Viewer and choose your scan settings.</p></li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div>
+        <a class="footer-brand" href="#top">Vine Viewer</a>
+        <p>An independent project. Not affiliated with or endorsed by Amazon.</p>
+      </div>
+      <a href="https://github.com/EhrenTheMan/amazon-vine-viewer">View on GitHub <span aria-hidden="true">↗</span></a>
+    </div>
+  </footer>
+</body>
+</html>

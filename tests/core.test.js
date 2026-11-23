@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { parseVineDocument, parseEtv, safeImage, hasNextPage, parseKeywords, filterItems, sortItems, createArrivalTracker } = require("../core.js");
+const { parseVineDocument, parseEtv, safeImage, hasNextPage, parseKeywords, matchesKeywords, parseCategories, filterItems, sortItems, createArrivalTracker } = require("../core.js");
 
 test("keeps zero ETV first in all sort modes, then sorts and leaves unknowns last", () => {
   const items = [{ etv: null }, { etv: 4 }, { etv: 12 }, { etv: 0 }, { etv: 4 }, {}];
@@ -65,6 +65,34 @@ test("filters case-insensitive literal keywords separated by commas or newlines"
   const values = [{ title: "Free", etv: 0 }, { title: "Unknown", etv: null }, { title: "Costly", etv: 10 }];
   assert.deepEqual(filterItems(values, [], false), [values[1], values[2]]);
   assert.deepEqual(filterItems(values, [], true), values);
+});
+
+test("searches titles and ASINs without overriding hidden keywords or ETV filters", () => {
+  const items = [{ title: "Phone Case", asin: "B000000001", etv: 0 }, { title: "Desk lamp", asin: "B000000002", etv: 4 }];
+  assert.deepEqual(filterItems(items, [], true, "  pHoNe "), [items[0]]);
+  assert.deepEqual(filterItems(items, [], true, "b000000002"), [items[1]]);
+  assert.deepEqual(filterItems(items, ["phone"], true, "phone"), []);
+  assert.deepEqual(filterItems(items, [], false, "phone"), []);
+  assert.equal(matchesKeywords(items[0], parseKeywords("cable, CASE")), true);
+  assert.equal(matchesKeywords(items[1], []), false);
+});
+
+test("validates and deduplicates favorite Amazon category URLs", () => {
+  const url = "https://www.amazon.com/vine/vine-items?queue=encore&pn=123&cn=456&page=2";
+  assert.deepEqual(parseCategories(`${url}\n${url}`), [{ pn: "123", cn: "456" }]);
+  assert.deepEqual(parseCategories(" \n"), []);
+  for (const invalid of ["not a url", url.replace("www.amazon.com", "evil.example"), url.replace("queue=encore", "queue=potluck"), url.replace("cn=456", "cn=x"), `${url}&cn=789`, `${url}&search=lamp`]) {
+    assert.throws(() => parseCategories(invalid), /category URL|complete Amazon/);
+  }
+});
+
+test("rejects next-page links that switch away from the selected category", () => {
+  const doc = (href) => ({ querySelector: () => ({ querySelector: () => ({
+    classList: { contains: () => false }, querySelector: () => ({ getAttribute: () => href }),
+  }) }) });
+  const category = { pn: "123", cn: "456" };
+  assert.equal(hasNextPage(doc("/vine/vine-items?queue=encore&pn=123&cn=456&page=2"), "encore", 1, category), true);
+  assert.throws(() => hasNextPage(doc("/vine/vine-items?queue=encore&pn=123&cn=789&page=2"), "encore", 1, category), /unexpected/);
 });
 
 test("validates next-page links and identifies the end", () => {

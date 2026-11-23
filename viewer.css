@@ -12,6 +12,8 @@ input { width: 7rem; }
 .checkbox { display: flex; align-items: center; gap: 0.5rem; }
 .checkbox input { width: auto; }
 .keywords { flex: 1 1 300px; }
+.search { margin: 1rem 0; max-width: 24rem; }
+.search input { width: auto; }
 .actions { display: flex; gap: 0.5rem; }
 button { cursor: pointer; }
 button:disabled { opacity: 0.5; cursor: default; }
@@ -20,6 +22,8 @@ button:disabled { opacity: 0.5; cursor: default; }
 #items { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1rem; }
 article { display: flex; flex-direction: column; padding: 1rem; gap: 0.7rem; background: white; border-radius: 0.6rem; }
 article.new-arrival { outline: 2px solid #087549; background: #eaf8ef; }
+article.keyword-match { box-shadow: inset 0 0 0 2px #ad7713; }
+.keyword-badge { align-self: flex-start; background: #fff0c7; color: #694400; border-radius: 0.25rem; padding: 0.2rem 0.45rem; font-size: 0.8rem; font-weight: 700; }
 .arrival-badge { align-self: flex-start; background: #087549; color: white; border-radius: 0.25rem; padding: 0.2rem 0.45rem; font-size: 0.8rem; font-weight: 700; }
 article img { width: 100%; height: 160px; object-fit: contain; }
 article a { color: #075a86; overflow-wrap: anywhere; }

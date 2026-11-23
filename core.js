@@ -46,7 +46,7 @@
     return Number.isFinite(number) && number >= 0 ? number : null;
   }
 
-  function hasNextPage(doc, queue, currentPage) {
+  function hasNextPage(doc, queue, currentPage, category = null) {
     const pagination = doc.querySelector("#vvp-items-grid-container .a-pagination");
     if (!pagination) {
       if (currentPage > 1) throw new Error("Amazon's pagination was not found on a later page.");
@@ -62,7 +62,8 @@
     const url = new URL(link.getAttribute("href"), "https://www.amazon.com");
     if (url.protocol !== "https:" || url.hostname !== "www.amazon.com" ||
         url.pathname !== "/vine/vine-items" || url.searchParams.get("queue") !== queue ||
-        url.searchParams.get("page") !== String(currentPage + 1)) {
+        url.searchParams.get("page") !== String(currentPage + 1) ||
+        (category && (url.searchParams.get("pn") !== category.pn || url.searchParams.get("cn") !== category.cn))) {
       throw new Error("Amazon returned an unexpected next-page link.");
     }
     return true;
@@ -72,9 +73,41 @@
     return [...new Set(value.split(/[\n,]+/).map((word) => word.trim().toLowerCase()).filter(Boolean))];
   }
 
-  function filterItems(items, keywords, showZero = true) {
+  function matchesKeywords(item, keywords) {
+    const title = item.title.toLowerCase();
+    return keywords.some((keyword) => title.includes(keyword));
+  }
+
+  function parseCategories(value) {
+    const categories = [];
+    const seen = new Set();
+    for (const line of value.split(/\n/).map((entry) => entry.trim()).filter(Boolean)) {
+      let url;
+      try { url = new URL(line); } catch { throw new Error("Enter one complete Amazon.com category URL per line."); }
+      const pn = url.searchParams.get("pn");
+      const cn = url.searchParams.get("cn");
+      if (url.protocol !== "https:" || url.hostname !== "www.amazon.com" || url.port || url.username || url.password ||
+          url.pathname !== "/vine/vine-items" || url.searchParams.get("queue") !== "encore" ||
+          url.searchParams.has("search") ||
+          !/^\d+$/.test(pn || "") || !/^\d+$/.test(cn || "") ||
+          url.searchParams.getAll("queue").length !== 1 || url.searchParams.getAll("pn").length !== 1 ||
+          url.searchParams.getAll("cn").length !== 1) {
+        throw new Error("Each favorite must be an Amazon.com Additional Items category URL with numeric pn and cn parameters.");
+      }
+      const key = `${pn}:${cn}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        categories.push({ pn, cn });
+      }
+    }
+    return categories;
+  }
+
+  function filterItems(items, keywords, showZero = true, search = "") {
+    const query = search.trim().toLowerCase();
     return items.filter((item) => (showZero || item.etv !== 0) &&
-      !keywords.some((keyword) => item.title.toLowerCase().includes(keyword)));
+      !matchesKeywords(item, keywords) &&
+      (!query || item.title.toLowerCase().includes(query) || item.asin?.toLowerCase().includes(query)));
   }
 
   function createArrivalTracker() {
@@ -131,7 +164,7 @@
     }).map(({ item }) => item);
   }
 
-  const api = { parseVineDocument, parseEtv, safeImage, hasNextPage, parseKeywords, filterItems, sortItems, createArrivalTracker };
+  const api = { parseVineDocument, parseEtv, safeImage, hasNextPage, parseKeywords, matchesKeywords, parseCategories, filterItems, sortItems, createArrivalTracker };
   if (typeof module !== "undefined") module.exports = api;
   else root.VineCore = api;
 })(globalThis);
