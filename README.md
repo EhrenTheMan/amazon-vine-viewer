@@ -17,6 +17,8 @@ The optional **Request product from viewer** setting changes that button to **Re
 
 ## How it works
 
+The queue, search, sort, and page-size controls stay visible. Open **Scan settings**, **Keywords**, or **Alerts & options** for less frequently used controls; **Scan activity** shows additional status details.
+
 For Additional Items, the viewer scans a configurable number of Amazon pages (1–100, default 5), starting at page 1, with a five-second pause between requests. Changes to the page limit take effect at the start of the next scan. It stops early when Amazon reports the end. Results are combined in Amazon's page order and deduplicated by ASIN. Other queues still load only their first Amazon page. The viewer's separate **Items per page** setting controls display pagination, not Amazon's page size.
 
 Enter words or phrases separated by commas or new lines in **Hide titles containing**. Matching is case-insensitive and uses literal substrings. Filtering is local and reversible, does not hide anything on Amazon, and excludes keyword-hidden items from ETV lookups. Settings persist in Firefox.

@@ -474,6 +474,7 @@ async function applySettings() {
   if (!Number.isInteger(pageSize) || pageSize < 1 || pageSize > 100 ||
       !Number.isInteger(scanPages) || scanPages < 1 || scanPages > 100) {
     settingsInvalid = true;
+    if (!Number.isInteger(scanPages) || scanPages < 1 || scanPages > 100) $("scan-settings").open = true;
     showError("Items per page and pages to scan must be whole numbers from 1 to 100.");
     return;
   }
@@ -481,6 +482,7 @@ async function applySettings() {
     VineCore.parseCategories($("categories").value);
   } catch (error) {
     settingsInvalid = true;
+    $("scan-settings").open = true;
     showError(error.message);
     return;
   }
@@ -573,7 +575,7 @@ async function start() {
   $("direct-request").checked = settings.directRequest;
   $("shared-etv").checked = settings.sharedEtv;
   $("settings").addEventListener("change", (event) => {
-    if (event.target.id === "alert-desktop") return;
+    if (event.target.id === "alert-desktop" || event.target.id === "search") return;
     void applySettings().catch((error) => showError(`Could not save settings: ${error.message}`));
   });
   $("alert-desktop").addEventListener("change", () => {

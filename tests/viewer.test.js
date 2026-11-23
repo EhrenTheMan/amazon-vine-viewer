@@ -59,3 +59,15 @@ test("refresh scheduling reports the timer and clears it when paused", () => {
   assert.equal(h.timers[0].cleared, true);
   assert.equal(h.nodes.get("next-refresh").textContent, "Next refresh: not scheduled.");
 });
+
+test("reveals collapsed scan settings when a category URL is invalid", async () => {
+  const h = harness();
+  vm.runInContext(`
+    $("page-size").value = "24";
+    $("scan-pages").value = "5";
+    $("categories").value = "not a URL";
+  `, h.context);
+  await vm.runInContext("applySettings()", h.context);
+  assert.equal(h.nodes.get("scan-settings").open, true);
+  assert.match(h.nodes.get("error").textContent, /category URL/);
+});
